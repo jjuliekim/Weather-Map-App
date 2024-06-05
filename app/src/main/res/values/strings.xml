@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Kim_J-Project5</string>
+    <string name="enter_location">Enter Location</string>
+    <string name="current_location">Current Location</string>
+    <string name="check_weather">Check Weather</string>
+    <string name="add_locations">Add Locations</string>
+    <string name="previous_searches">Load Previous Searches</string>
+    <string name="location">Location</string>
+    <string name="temperature">temperature</string>
+    <string name="feels_like">feels like</string>
+    <string name="lowest_temp">lowest temp</string>
+    <string name="highest_temp">highest temp</string>
+    <string name="humidity">humidity</string>
+    <string name="get_a_5_day_forecast">Get a 5 Day Forecast</string>
+    <string name="button">Button</string>
 </resources>
