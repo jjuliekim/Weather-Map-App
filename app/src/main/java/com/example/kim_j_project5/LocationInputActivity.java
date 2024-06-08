@@ -1,5 +1,6 @@
 package com.example.kim_j_project5;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -9,6 +10,8 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -103,6 +106,10 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
                 requestLocationPermission();
             }
         });
+
+        // add location button actions
+        addLocationButton.setOnClickListener(v -> showAddLocationDialog());
+
     }
 
     // request location permissions
@@ -249,6 +256,28 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
                 startActivity(nextIntent);
             }
         });
+    }
+
+    private void showAddLocationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_add_location, null);
+        builder.setView(dialogView);
+        EditText editTextDialogLocation = dialogView.findViewById(R.id.addLocationText);
+        Button buttonDialogAddLocation = dialogView.findViewById(R.id.addNotifsButton);
+        AlertDialog dialog = builder.create();
+
+        buttonDialogAddLocation.setOnClickListener(v -> {
+            String location = editTextDialogLocation.getText().toString();
+            if (!location.isEmpty()) {
+                // add to background service/receiver
+                dialog.dismiss();
+                Toast.makeText(LocationInputActivity.this, "Location Added", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(LocationInputActivity.this, "Enter Location", Toast.LENGTH_SHORT).show();
+            }
+        });
+        dialog.show();
     }
 
 }
