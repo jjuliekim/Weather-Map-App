@@ -79,6 +79,23 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
             nextIntent.putExtra("location", locationEditText.getText().toString());
             startActivity(nextIntent);
         });
+
+        // get current location and get weather data
+        getCurrLocButton.setOnClickListener(v -> {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+                    if (location != null) {
+                        LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                        updateMapLocation(currentLatLng);
+                        getCityNameFromLatLng(currentLatLng);
+                    } else {
+                        Toast.makeText(LocationInputActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                requestLocationPermission();
+            }
+        });
     }
 
     // request location permissions
@@ -150,6 +167,30 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
         } catch (IOException e) {
             Log.i("HERE LOCATION INPUT", "e get lat lng from loc: " + e);
             Toast.makeText(this, "Unable to get location", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // get city name from LatLng and start WeatherDataActivity with city name
+    private void getCityNameFromLatLng(LatLng latLng) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                String cityName = address.getLocality();
+                if (cityName != null && !cityName.isEmpty()) {
+                    Intent nextIntent = new Intent(LocationInputActivity.this, WeatherDataActivity.class);
+                    nextIntent.putExtra("location", cityName);
+                    startActivity(nextIntent);
+                } else {
+                    Toast.makeText(this, "Unable to determine city name", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "No address found for location", Toast.LENGTH_SHORT).show();
+            }
+        } catch (IOException e) {
+            Log.i("LOCATION INPUT", "Exception getting city name from lat lng: " + e);
+            Toast.makeText(this, "Unable to get city name", Toast.LENGTH_SHORT).show();
         }
     }
 
