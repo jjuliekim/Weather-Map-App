@@ -114,7 +114,7 @@ public class WeekForecastActivity extends AppCompatActivity {
                     JSONObject main = forecast.getJSONObject("main");
                     double highestTemp = main.getDouble("temp_max");
                     double lowestTemp = main.getDouble("temp_min");
-                    double precipitation = forecast.getDouble("pop");
+                    double precipitation = forecast.has("pop") ? forecast.getDouble("pop") : 0;
 
                     ForecastDetails details = new ForecastDetails(formattedDate, lowestTemp, highestTemp, precipitation);
                     items.add(details);
