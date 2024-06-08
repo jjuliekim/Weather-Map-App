@@ -207,8 +207,8 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
     // save searched locations with shared preferences
     private void saveLastSearched(String location) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("lastLocation1", sharedPreferences.getString("lastLocation2", ""));
-        editor.putString("lastLocation2", location);
+        editor.putString("lastLocation2", sharedPreferences.getString("lastLocation1", ""));
+        editor.putString("lastLocation1", location);
         editor.apply();
     }
 
