@@ -36,7 +36,7 @@ import java.util.Locale;
 
 public class WeekForecastActivity extends AppCompatActivity {
     private String apiKey = "7952fc9a03ecf59677b07feb65d3b189";
-    private String baseURL = "api.openweathermap.org/data/2.5/forecast?units=imperial&";
+    private String baseURL = "https://api.openweathermap.org/data/2.5/forecast?units=imperial&";
     private String location;
     ForecastAdapter adapter;
     List<ForecastDetails> items;

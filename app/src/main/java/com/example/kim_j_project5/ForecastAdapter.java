@@ -38,18 +38,17 @@ public class ForecastAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_daily_forecast, parent, false);
         }
+        ForecastDetails item = weatherList.get(position);
 
         TextView text1 = convertView.findViewById(R.id.date_text);
         TextView text2 = convertView.findViewById(R.id.lowest_temp_text);
         TextView text3 = convertView.findViewById(R.id.highest_temp_text);
         TextView text4 = convertView.findViewById(R.id.precipitation_text);
 
-        ForecastDetails item = weatherList.get(position);
-
-        text1.setText(item.getDate());
-        text2.setText(String.valueOf(item.getLowestTemp()));
-        text3.setText(String.valueOf(item.getHighestTemp()));
-        text4.setText(String.valueOf(item.getPrecipitation()));
+        text1.setText(String.format("Weather on %s", item.getDate()));
+        text2.setText(String.format("Lowest Temp: %s", item.getLowestTemp()));
+        text3.setText(String.format("Highest Temp: %s", item.getHighestTemp()));
+        text4.setText(String.format("Precipitation: %s", item.getPrecipitation()));
 
         return convertView;
     }
