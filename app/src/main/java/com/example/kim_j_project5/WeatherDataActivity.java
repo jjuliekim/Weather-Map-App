@@ -55,7 +55,7 @@ public class WeatherDataActivity extends AppCompatActivity {
 
         // set text
         TextView locationText = findViewById(R.id.location_text);
-        locationText.setText(String.format("Weather at %s", location));
+        locationText.setText(String.format("Weather in %s", location));
 
         temperatureText = findViewById(R.id.temp_text);
         feelsLikeText = findViewById(R.id.feels_like_text);
