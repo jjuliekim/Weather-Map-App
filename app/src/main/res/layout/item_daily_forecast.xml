@@ -3,15 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#E8DCF6"
-    android:padding="16dp">
+    android:padding="12dp">
 
     <TextView
         android:id="@+id/date_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:background="@color/white"
         android:text="@string/date" />
 
     <TextView
@@ -19,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:background="@color/white"
         android:text="@string/lowest_temp" />
 
     <TextView
@@ -27,7 +24,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:background="@color/white"
         android:text="@string/highest_temp" />
 
     <TextView
@@ -35,7 +31,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:background="@color/white"
         android:text="@string/pop" />
 
 </LinearLayout>

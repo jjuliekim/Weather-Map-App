@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -19,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -26,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -33,6 +36,8 @@ public class WeekForecastActivity extends AppCompatActivity {
     private String apiKey = "7952fc9a03ecf59677b07feb65d3b189";
     private String baseURL = "api.openweathermap.org/data/2.5/forecast?units=imperial&";
     private String location;
+    ForecastAdapter adapter;
+    List<ForecastDetails> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +52,11 @@ public class WeekForecastActivity extends AppCompatActivity {
         Intent myIntent = getIntent();
         location = myIntent.getStringExtra("location");
 
+        ListView listView = findViewById(R.id.listView);
+        items = new ArrayList<>();
         getData();
+        adapter = new ForecastAdapter(this, items);
+        listView.setAdapter(adapter);
     }
 
     // get json data from api call
@@ -91,10 +100,20 @@ public class WeekForecastActivity extends AppCompatActivity {
 
             try {
                 JSONObject jsonObject = new JSONObject(response);
-                // parse temp details
-                JSONObject main = jsonObject.getJSONObject("main");
-                double temp = main.getDouble("temp");
+                // parse daily details
+                JSONArray list = jsonObject.getJSONArray("list");
+                for (int i = 0; i < list.length(); i++) {
+                    JSONObject forecast = list.getJSONObject(i);
+                    String date = forecast.getString("dt_txt");
+                    JSONObject main = forecast.getJSONObject("main");
+                    double highestTemp = main.getDouble("temp_max");
+                    double lowestTemp = main.getDouble("temp_min");
+                    double precipitation = forecast.getDouble("pop");
 
+                    ForecastDetails details = new ForecastDetails(date, lowestTemp, highestTemp, precipitation);
+                    items.add(details);
+                }
+                adapter.notifyDataSetChanged();
             } catch (Exception e) {
                 Log.e("HERE WEEK JSON Parsing", "Error parsing JSON", e);
             }
