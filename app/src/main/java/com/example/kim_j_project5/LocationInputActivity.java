@@ -68,7 +68,6 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
                 String location = locationEditText.getText().toString();
                 if (!location.isEmpty()) {
                     getLatLngFromLocation(location);
-                    saveLastSearched(location);
                 }
                 return true;
             }
@@ -169,6 +168,7 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
                 Address address = addresses.get(0);
                 LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                 updateMapLocation(latLng);
+                saveLastSearched(location);
             } else {
                 Toast.makeText(this, "Location not found", Toast.LENGTH_SHORT).show();
             }
@@ -215,6 +215,7 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
             editor.putString("lastLocation2", sharedPreferences.getString("lastLocation1", "--"));
             editor.putString("lastLocation1", location);
             editor.apply();
+            updateLastSearchedButtons();
         }
     }
 
