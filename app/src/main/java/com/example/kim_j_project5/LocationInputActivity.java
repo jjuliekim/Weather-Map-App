@@ -71,8 +71,13 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
 
         // go to weather data activity with inputted location
         checkWeatherButton.setOnClickListener(v -> {
+            if (locationEditText.getText().toString().isEmpty()) {
+                Toast.makeText(this, "Enter Valid Location", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Intent nextIntent = new Intent(LocationInputActivity.this, WeatherDataActivity.class);
             nextIntent.putExtra("location", locationEditText.getText().toString());
+            startActivity(nextIntent);
         });
     }
 
