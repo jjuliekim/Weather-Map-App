@@ -9,6 +9,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -34,7 +36,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class WeekForecastActivity extends AppCompatActivity {
+public class WeekForecastActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private String apiKey = "7952fc9a03ecf59677b07feb65d3b189";
     private String baseURL = "https://api.openweathermap.org/data/2.5/forecast?units=imperial&";
     private String location;
@@ -59,6 +61,7 @@ public class WeekForecastActivity extends AppCompatActivity {
         getData();
         adapter = new ForecastAdapter(this, items);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(this);
     }
 
     // get json data from api call
@@ -149,5 +152,13 @@ public class WeekForecastActivity extends AppCompatActivity {
         }
     }
 
-
+    // go to video forecast of item clicked
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        ForecastDetails selected = (ForecastDetails) parent.getItemAtPosition(position);
+        Intent nextIntent = new Intent(WeekForecastActivity.this, VideoForecastActivity.class);
+        nextIntent.putExtra("location", location);
+        nextIntent.putExtra("date", selected.getDate());
+        startActivity(nextIntent);
+    }
 }

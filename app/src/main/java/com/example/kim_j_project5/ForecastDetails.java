@@ -14,7 +14,6 @@ public class ForecastDetails {
     }
 
     // getters and setters
-
     public String getDate() {
         return date;
     }
