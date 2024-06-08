@@ -102,7 +102,7 @@ public class WeekForecastActivity extends AppCompatActivity {
 
             try {
                 SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                SimpleDateFormat output = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+                SimpleDateFormat output = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.getDefault());
                 JSONObject jsonObject = new JSONObject(response);
                 // parse daily details
                 JSONArray list = jsonObject.getJSONArray("list");
