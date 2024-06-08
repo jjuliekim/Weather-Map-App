@@ -68,6 +68,7 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
                 String location = locationEditText.getText().toString();
                 if (!location.isEmpty()) {
                     getLatLngFromLocation(location);
+                    saveLastSearched(location);
                 }
                 return true;
             }
@@ -186,6 +187,7 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
                 Address address = addresses.get(0);
                 String cityName = address.getLocality();
                 if (!cityName.isEmpty()) {
+                    saveLastSearched(cityName);
                     Intent nextIntent = new Intent(LocationInputActivity.this, WeatherDataActivity.class);
                     nextIntent.putExtra("location", cityName);
                     startActivity(nextIntent);
@@ -206,16 +208,22 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
 
     // save searched locations with shared preferences
     private void saveLastSearched(String location) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("lastLocation2", sharedPreferences.getString("lastLocation1", ""));
-        editor.putString("lastLocation1", location);
-        editor.apply();
+        String lastLocation1 = sharedPreferences.getString("lastLocation1", "--");
+        String lastLocation2 = sharedPreferences.getString("lastLocation2", "--");
+        if (!lastLocation1.equals(location) && !lastLocation2.equals(location)) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("lastLocation2", sharedPreferences.getString("lastLocation1", "--"));
+            editor.putString("lastLocation1", location);
+            editor.apply();
+        }
     }
 
     // display last searched locations
     private void updateLastSearchedButtons() {
         String lastLocation1 = sharedPreferences.getString("lastLocation1", "--");
         String lastLocation2 = sharedPreferences.getString("lastLocation2", "--");
+        Log.i("HERE LOCATION INPUT", "loc 1: " + lastLocation1);
+        Log.i("HERE LOCATION INPUT", "loc 2: " + lastLocation2);
         // set text
         Button savedLoc1Button = findViewById(R.id.saved_loc_1);
         Button savedLoc2Button = findViewById(R.id.saved_loc_2);
