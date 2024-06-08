@@ -13,7 +13,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class VideoForecastActivity extends AppCompatActivity {
     private String location;
-    private String date;
     private VideoView videoView;
 
     @Override
@@ -29,7 +28,6 @@ public class VideoForecastActivity extends AppCompatActivity {
 
         Intent myIntent = getIntent();
         location = myIntent.getStringExtra("location");
-        date = myIntent.getStringExtra("date");
 
         TextView videoTitle = findViewById(R.id.location_textView);
         videoTitle.setText(String.format("%s Forecast", location));
