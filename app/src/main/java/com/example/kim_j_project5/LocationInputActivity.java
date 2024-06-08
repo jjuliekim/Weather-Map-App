@@ -232,9 +232,6 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
     private void updateLastSearchedButtons() {
         String lastLocation1 = sharedPreferences.getString("lastLocation1", "--");
         String lastLocation2 = sharedPreferences.getString("lastLocation2", "--");
-        Log.i("HERE LOCATION INPUT", "loc 1: " + lastLocation1);
-        Log.i("HERE LOCATION INPUT", "loc 2: " + lastLocation2);
-        // set text
         Button savedLoc1Button = findViewById(R.id.saved_loc_1);
         Button savedLoc2Button = findViewById(R.id.saved_loc_2);
         savedLoc1Button.setText(lastLocation1);

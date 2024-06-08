@@ -20,4 +20,5 @@
     <string name="condition">condition</string>
     <string name="pop">pop</string>
     <string name="date">date</string>
+    <string name="record_video">Record Video</string>
 </resources>
