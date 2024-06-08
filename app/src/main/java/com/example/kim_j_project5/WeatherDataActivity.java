@@ -64,7 +64,11 @@ public class WeatherDataActivity extends AppCompatActivity {
         descriptionText = findViewById(R.id.description_text);
 
         Button forecastButton = findViewById(R.id.forecast_button);
-//        forecastButton.setOnClickListener(v -> );
+        forecastButton.setOnClickListener(v -> {
+            Intent nextIntent = new Intent(WeatherDataActivity.this, WeekForecastActivity.class);
+            nextIntent.putExtra("location", location);
+            startActivity(nextIntent);
+        });
 
         getData();
     }
