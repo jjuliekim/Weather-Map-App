@@ -28,7 +28,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -99,18 +101,22 @@ public class WeekForecastActivity extends AppCompatActivity {
             }
 
             try {
+                SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                SimpleDateFormat output = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
                 JSONObject jsonObject = new JSONObject(response);
                 // parse daily details
                 JSONArray list = jsonObject.getJSONArray("list");
                 for (int i = 0; i < list.length(); i++) {
                     JSONObject forecast = list.getJSONObject(i);
-                    String date = forecast.getString("dt_txt");
+                    String dateString = forecast.getString("dt_txt");
+                    Date date = input.parse(dateString);
+                    String formattedDate = output.format(date);
                     JSONObject main = forecast.getJSONObject("main");
                     double highestTemp = main.getDouble("temp_max");
                     double lowestTemp = main.getDouble("temp_min");
                     double precipitation = forecast.getDouble("pop");
 
-                    ForecastDetails details = new ForecastDetails(date, lowestTemp, highestTemp, precipitation);
+                    ForecastDetails details = new ForecastDetails(formattedDate, lowestTemp, highestTemp, precipitation);
                     items.add(details);
                 }
                 adapter.notifyDataSetChanged();
