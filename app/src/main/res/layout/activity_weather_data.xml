@@ -57,6 +57,14 @@
                 android:text="@string/humidity"
                 android:textSize="20sp" />
 
+            <TextView
+                android:id="@+id/description_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/condition"
+                android:textSize="20sp" />
+
             <Button
                 android:id="@+id/forecast_button"
                 android:layout_width="wrap_content"

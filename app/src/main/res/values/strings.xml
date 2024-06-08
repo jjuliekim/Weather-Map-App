@@ -17,4 +17,5 @@
     <string name="get_notifications">Get Notifications</string>
     <string name="wind_speed">wind speed</string>
     <string name="add_location_notifications">Add Location Notifications</string>
+    <string name="condition">condition</string>
 </resources>
