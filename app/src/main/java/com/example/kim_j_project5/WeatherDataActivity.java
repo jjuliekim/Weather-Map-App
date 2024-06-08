@@ -37,7 +37,7 @@ public class WeatherDataActivity extends AppCompatActivity {
     private TextView humidityText;
     private TextView descriptionText;
     private String apiKey = "7952fc9a03ecf59677b07feb65d3b189";
-    private String baseURL = "https://api.openweathermap.org/data/2.5/weather?";
+    private String baseURL = "https://api.openweathermap.org/data/2.5/weather?units=imperial&";
     private String location;
 
     @Override
