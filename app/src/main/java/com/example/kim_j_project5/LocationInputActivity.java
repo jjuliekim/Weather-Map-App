@@ -1,14 +1,17 @@
 package com.example.kim_j_project5;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,17 +27,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+
 public class LocationInputActivity extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
     private EditText locationEditText;
-    private Button checkWeatherButton, getCurrLocButton, addLocationButton;
     private FusedLocationProviderClient fusedLocationClient;
 
     @Override
@@ -43,19 +45,38 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
         setContentView(R.layout.activity_location_input);
 
         locationEditText = findViewById(R.id.enter_loc_text);
-        checkWeatherButton = findViewById(R.id.check_weather_button);
-        getCurrLocButton = findViewById(R.id.curr_loc_button);
-        addLocationButton = findViewById(R.id.add_loc_button);
+        Button checkWeatherButton = findViewById(R.id.check_weather_button);
+        Button getCurrLocButton = findViewById(R.id.curr_loc_button);
+        Button addLocationButton = findViewById(R.id.add_loc_button);
 
+        // location
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
-
         requestLocationPermission();
+
+        // update map marker from inputted location
+        locationEditText.setOnEditorActionListener((TextView v, int actionId, KeyEvent event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO || event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                String location = locationEditText.getText().toString();
+                if (!location.isEmpty()) {
+                    getLatLngFromLocation(location);
+                }
+                return true;
+            }
+            return false;
+        });
+
+        // go to weather data activity with inputted location
+        checkWeatherButton.setOnClickListener(v -> {
+            Intent nextIntent = new Intent(LocationInputActivity.this, WeatherDataActivity.class);
+            nextIntent.putExtra("location", locationEditText.getText().toString());
+        });
     }
 
+    // request location permissions
     private void requestLocationPermission() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
@@ -90,6 +111,7 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
         getDeviceLocation();
     }
 
+    // set map marker with user's current location (as default)
     private void getDeviceLocation() {
         try {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -99,7 +121,7 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
                         LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                         updateMapLocation(currentLatLng);
                     } else {
-                        Toast.makeText(LocationInputActivity.this, "Unable to get Current Location", Toast.LENGTH_SHORT).show();
+                        Log.i("HERE LOCATION INPUT", "unable to get device location");
                     }
                 });
             }
@@ -108,6 +130,7 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
         }
     }
 
+    // get coords from inputted location to mark on map
     private void getLatLngFromLocation(String location) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {
@@ -125,6 +148,7 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
         }
     }
 
+    // clear map and update with marker
     private void updateMapLocation(LatLng latLng) {
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(latLng));
