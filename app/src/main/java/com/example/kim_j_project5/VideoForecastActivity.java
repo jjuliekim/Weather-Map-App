@@ -2,6 +2,8 @@ package com.example.kim_j_project5;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class VideoForecastActivity extends AppCompatActivity {
     private String location;
     private String date;
+    private VideoView videoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,9 @@ public class VideoForecastActivity extends AppCompatActivity {
         Intent myIntent = getIntent();
         location = myIntent.getStringExtra("location");
         date = myIntent.getStringExtra("date");
+
+        TextView videoTitle = findViewById(R.id.location_textView);
+        videoView = findViewById(R.id.videoView);
 
     }
 }
