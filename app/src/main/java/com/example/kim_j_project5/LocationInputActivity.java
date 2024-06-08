@@ -178,15 +178,11 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
             if (addresses != null && !addresses.isEmpty()) {
                 Address address = addresses.get(0);
                 String cityName = address.getLocality();
-                if (cityName != null && !cityName.isEmpty()) {
+                if (!cityName.isEmpty()) {
                     Intent nextIntent = new Intent(LocationInputActivity.this, WeatherDataActivity.class);
                     nextIntent.putExtra("location", cityName);
                     startActivity(nextIntent);
-                } else {
-                    Toast.makeText(this, "Unable to determine city name", Toast.LENGTH_SHORT).show();
                 }
-            } else {
-                Toast.makeText(this, "No address found for location", Toast.LENGTH_SHORT).show();
             }
         } catch (IOException e) {
             Log.i("LOCATION INPUT", "Exception getting city name from lat lng: " + e);
