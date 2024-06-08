@@ -2,6 +2,7 @@ package com.example.kim_j_project5;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -11,6 +12,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class WeatherDataActivity extends AppCompatActivity {
+    private TextView temperatureText;
+    private TextView feelsLikeText;
+    private TextView windSpeedText;
+    private TextView humidityText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,5 +32,12 @@ public class WeatherDataActivity extends AppCompatActivity {
         // set location text
         TextView locationText = findViewById(R.id.location_text);
         locationText.setText(String.format("Weather at %s", location));
+
+        Button forecastButton = findViewById(R.id.forecast_button);
+//        forecastButton.setOnClickListener(v -> );
+
+
     }
+
+
 }

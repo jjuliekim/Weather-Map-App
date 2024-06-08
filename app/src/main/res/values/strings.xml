@@ -15,4 +15,6 @@
     <string name="button">Button</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="get_notifications">Get Notifications</string>
+    <string name="wind_speed">wind speed</string>
+    <string name="add_location_notifications">Add Location Notifications</string>
 </resources>
