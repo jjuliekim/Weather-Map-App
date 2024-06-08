@@ -32,6 +32,7 @@ public class VideoForecastActivity extends AppCompatActivity {
         date = myIntent.getStringExtra("date");
 
         TextView videoTitle = findViewById(R.id.location_textView);
+        videoTitle.setText(String.format("%s Forecast", location));
         videoView = findViewById(R.id.videoView);
 
     }
