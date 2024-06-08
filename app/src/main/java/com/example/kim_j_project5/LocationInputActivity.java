@@ -1,6 +1,7 @@
 package com.example.kim_j_project5;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -38,6 +39,7 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
     private GoogleMap mMap;
     private EditText locationEditText;
     private FusedLocationProviderClient fusedLocationClient;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,9 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
         }
         requestLocationPermission();
 
+        sharedPreferences = getSharedPreferences("Locations", MODE_PRIVATE);
+        updateLastSearchedButtons();
+
         // update map marker from inputted location
         locationEditText.setOnEditorActionListener((TextView v, int actionId, KeyEvent event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO || event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
@@ -71,12 +76,14 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
 
         // go to weather data activity with inputted location
         checkWeatherButton.setOnClickListener(v -> {
-            if (locationEditText.getText().toString().isEmpty()) {
+            String location = locationEditText.getText().toString();
+            if (location.isEmpty()) {
                 Toast.makeText(this, "Enter Valid Location", Toast.LENGTH_SHORT).show();
                 return;
             }
+            saveLastSearched(location);
             Intent nextIntent = new Intent(LocationInputActivity.this, WeatherDataActivity.class);
-            nextIntent.putExtra("location", locationEditText.getText().toString());
+            nextIntent.putExtra("location", location);
             startActivity(nextIntent);
         });
 
@@ -196,4 +203,44 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
         mMap.addMarker(new MarkerOptions().position(latLng));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
     }
+
+    // save searched locations with shared preferences
+    private void saveLastSearched(String location) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("lastLocation1", sharedPreferences.getString("lastLocation2", ""));
+        editor.putString("lastLocation2", location);
+        editor.apply();
+    }
+
+    // display last searched locations
+    private void updateLastSearchedButtons() {
+        String lastLocation1 = sharedPreferences.getString("lastLocation1", "--");
+        String lastLocation2 = sharedPreferences.getString("lastLocation2", "--");
+
+        // Update buttons with last searched locations
+        Button savedLoc1Button = findViewById(R.id.saved_loc_1);
+        Button savedLoc2Button = findViewById(R.id.saved_loc_2);
+        savedLoc1Button.setText(lastLocation1);
+        savedLoc2Button.setText(lastLocation2);
+
+        // Set click listeners for the buttons to use the saved locations
+        savedLoc1Button.setOnClickListener(v -> {
+            if (!lastLocation1.equals("--")) {
+                saveLastSearched(lastLocation1);
+                Intent nextIntent = new Intent(LocationInputActivity.this, WeatherDataActivity.class);
+                nextIntent.putExtra("location", lastLocation1);
+                startActivity(nextIntent);
+            }
+        });
+
+        savedLoc2Button.setOnClickListener(v -> {
+            if (!lastLocation2.equals("--")) {
+                saveLastSearched(lastLocation2);
+                Intent nextIntent = new Intent(LocationInputActivity.this, WeatherDataActivity.class);
+                nextIntent.putExtra("location", lastLocation2);
+                startActivity(nextIntent);
+            }
+        });
+    }
+
 }
