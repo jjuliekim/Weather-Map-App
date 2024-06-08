@@ -1,6 +1,8 @@
 package com.example.kim_j_project5;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,5 +22,10 @@ public class WeatherDataActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        Intent myIntent = getIntent();
+        String location = myIntent.getStringExtra("location");
+        // set location text
+        TextView locationText = findViewById(R.id.location_text);
+        locationText.setText(String.format("Weather at %s", location));
     }
 }
