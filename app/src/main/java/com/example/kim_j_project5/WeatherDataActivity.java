@@ -98,7 +98,7 @@ public class WeatherDataActivity extends AppCompatActivity {
                 Toast.makeText(this, "Location not found", Toast.LENGTH_SHORT).show();
             }
         } catch (IOException e) {
-            Log.i("HERE LOCATION INPUT", "e get lat lng from loc: " + e);
+            Log.i("HERE WEATHER DATA", "e get lat lng from loc: " + e);
             Toast.makeText(this, "Unable to get location", Toast.LENGTH_SHORT).show();
         }
         return null;
@@ -131,7 +131,7 @@ public class WeatherDataActivity extends AppCompatActivity {
                 windSpeedText.setText(String.format("Wind Speed: %s mph", windSpeed));
                 descriptionText.setText(String.format("Condition: %s", description));
             } catch (Exception e) {
-                Log.e("JSON Parsing", "Error parsing JSON", e);
+                Log.e("HERE WEATHER DATA JSON Parsing", "Error parsing JSON", e);
             }
         }
 
@@ -153,7 +153,7 @@ public class WeatherDataActivity extends AppCompatActivity {
                     urlConnection.disconnect();
                 }
             } catch (Exception e) {
-                Log.e("DownloadDataTask", "Error", e);
+                Log.e("HERE WEATHER DATA DownloadDataTask", "Error", e);
                 return null;
             }
         }

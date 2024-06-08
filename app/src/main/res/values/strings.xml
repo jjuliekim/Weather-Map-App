@@ -18,4 +18,6 @@
     <string name="wind_speed">wind speed</string>
     <string name="add_location_notifications">Add Location Notifications</string>
     <string name="condition">condition</string>
+    <string name="pop">pop</string>
+    <string name="date">date</string>
 </resources>

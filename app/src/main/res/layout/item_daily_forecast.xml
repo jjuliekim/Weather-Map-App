@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#E8DCF6"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/date_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:background="@color/white"
+        android:text="@string/date" />
+
+    <TextView
+        android:id="@+id/lowest_temp_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:background="@color/white"
+        android:text="@string/lowest_temp" />
+
+    <TextView
+        android:id="@+id/highest_temp_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:background="@color/white"
+        android:text="@string/highest_temp" />
+
+    <TextView
+        android:id="@+id/precipitation_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:background="@color/white"
+        android:text="@string/pop" />
+
+</LinearLayout>
