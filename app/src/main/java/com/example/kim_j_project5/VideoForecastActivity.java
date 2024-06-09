@@ -23,6 +23,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,7 +46,7 @@ public class VideoForecastActivity extends AppCompatActivity {
         });
 
         Intent myIntent = getIntent();
-        location = myIntent.getStringExtra("location");
+        location = myIntent.getStringExtra("location").toLowerCase();
         videoFileName = location + ".mp4";
 
         TextView videoTitle = findViewById(R.id.location_textView);
@@ -60,6 +61,23 @@ public class VideoForecastActivity extends AppCompatActivity {
 
     // play video if exists already
     private void playVideo() {
+        // testing purposes
+        if (location.equalsIgnoreCase("boston")) {
+            File testBostonFile = new File(getFilesDir(), "boston.mp4");
+            InputStream input = getResources().openRawResource(R.raw.boston);
+            try {
+                FileOutputStream output = new FileOutputStream(testBostonFile);
+                copyStream(input, output);
+                input.close();
+                output.close();
+                videoView.setVideoURI(Uri.fromFile(testBostonFile));
+                videoView.start();
+            } catch (Exception e) {
+                Log.i("HERE VIDEO", "video file e: " + e.getMessage());
+            }
+            return;
+        }
+
         File videoFile = new File(getFilesDir(), videoFileName);
         if (videoFile.exists()) {
             videoView.setVideoURI(Uri.fromFile(videoFile));
@@ -123,7 +141,7 @@ public class VideoForecastActivity extends AppCompatActivity {
     private void copyStream(InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[1024];
         int bytesRead;
-        while ((bytesRead = in.read(buffer)) != 1) {
+        while ((bytesRead = in.read(buffer)) != -1) {
             out.write(buffer, 0, bytesRead);
         }
     }
