@@ -71,7 +71,6 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
                 String location = locationEditText.getText().toString();
                 if (!location.isEmpty()) {
                     getLatLngFromLocation(location);
-                    saveLastSearched(location);
                 }
                 return true;
             }
@@ -111,6 +110,7 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
         // add location button actions
         addLocationButton.setOnClickListener(v -> showAddLocationDialog());
 
+        startService(new Intent(this, BackgroundWeatherService.class));
     }
 
     // request location permissions
@@ -274,7 +274,6 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
         buttonDialogAddLocation.setOnClickListener(v -> {
             String location = editTextDialogLocation.getText().toString();
             if (!location.isEmpty()) {
-                // add to background service/receiver
                 dialog.dismiss();
                 Toast.makeText(LocationInputActivity.this, "Location Added", Toast.LENGTH_SHORT).show();
             } else {
