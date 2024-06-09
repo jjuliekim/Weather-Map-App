@@ -21,4 +21,7 @@
     <string name="pop">pop</string>
     <string name="date">date</string>
     <string name="record_video">Record Video</string>
+    <string name="share">Share</string>
+    <string name="share_via_email">Share via Email</string>
+    <string name="send_forecast_as_email">Send Forecast as Email</string>
 </resources>

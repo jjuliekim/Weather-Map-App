@@ -27,6 +27,8 @@
             android:exported="false" />
         <activity
             android:name=".WeekForecastActivity"
+            android:label="5 Day Forecast"
+            android:theme="@style/Theme.WeekForecast"
             android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.

@@ -9,6 +9,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -62,6 +64,39 @@ public class WeekForecastActivity extends AppCompatActivity implements AdapterVi
         adapter = new ForecastAdapter(this, items);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
+    }
+
+    // creating menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.ovf_menu, menu);
+        return true;
+    }
+
+    // handle menu item clicks
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_share) {
+            shareWeatherReport();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    // format weather report to share
+    private void shareWeatherReport() {
+        StringBuilder report = new StringBuilder();
+        for (ForecastDetails day : items) {
+            report.append("Weather Report for ").append(day.getDate()).append("\n")
+                    .append("Low: ").append(day.getLowestTemp()).append("°F\n")
+                    .append("High: ").append(day.getHighestTemp()).append("°F\n")
+                    .append("Precipitation: ").append(day.getPrecipitation()).append("%\n");
+        }
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Weather Report");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, report.toString());
+        startActivity(Intent.createChooser(emailIntent, "Share Weather Report"));
     }
 
     // get json data from api call

@@ -71,6 +71,7 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
                 String location = locationEditText.getText().toString();
                 if (!location.isEmpty()) {
                     getLatLngFromLocation(location);
+                    saveLastSearched(location);
                 }
                 return true;
             }
@@ -215,14 +216,18 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
 
     // save searched locations with shared preferences
     private void saveLastSearched(String location) {
+        Log.i("HERE LOCATION INPUT", "location: " + location);
         String lastLocation1 = sharedPreferences.getString("lastLocation1", "--");
         String lastLocation2 = sharedPreferences.getString("lastLocation2", "--");
         String lastLocation3 = sharedPreferences.getString("lastLocation3", "--");
         if (!lastLocation1.equals(location) && !lastLocation2.equals(location) && !lastLocation3.equals(location)) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("lastLocation3", sharedPreferences.getString("lastLocation2", "--"));
-            editor.putString("lastLocation2", sharedPreferences.getString("lastLocation1", "--"));
+            editor.putString("lastLocation3", lastLocation2);
+            editor.putString("lastLocation2", lastLocation1);
             editor.putString("lastLocation1", location);
+            Log.i("HERE LOCATION INPUT", "loc 1: " + lastLocation1);
+            Log.i("HERE LOCATION INPUT", "loc 2: " + lastLocation2);
+            Log.i("HERE LOCATION INPUT", "loc 3: " + lastLocation3);
             editor.apply();
             updateLastSearchedButtons();
         }
