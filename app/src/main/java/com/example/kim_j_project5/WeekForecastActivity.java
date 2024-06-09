@@ -35,6 +35,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -140,13 +141,19 @@ public class WeekForecastActivity extends AppCompatActivity implements AdapterVi
 
             try {
                 SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                SimpleDateFormat output = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.getDefault());
+                SimpleDateFormat output = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
                 JSONObject jsonObject = new JSONObject(response);
+                HashSet<String> dates = new HashSet<>();
                 // parse daily details
                 JSONArray list = jsonObject.getJSONArray("list");
                 for (int i = 0; i < list.length(); i++) {
                     JSONObject forecast = list.getJSONObject(i);
                     String dateString = forecast.getString("dt_txt");
+                    if (dates.contains(dateString.substring(0, 10))) {
+                        continue;
+                    } else {
+                        dates.add(dateString.substring(0, 10));
+                    }
                     Date date = input.parse(dateString);
                     String formattedDate = output.format(date);
                     JSONObject main = forecast.getJSONObject("main");
