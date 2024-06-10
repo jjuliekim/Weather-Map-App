@@ -16,6 +16,7 @@ import java.util.Set;
 public class BroadcastReceiverWeather extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.i("HERE BROADCAST", "here");
         if (intent != null && intent.getAction() != null &&
                 intent.getAction().equals("com.example.kim_j_project5.background_update")) {
             String data1 = intent.getStringExtra("location1");
@@ -28,9 +29,10 @@ public class BroadcastReceiverWeather extends BroadcastReceiver {
             Set<String> locations = sharedPreferences.getStringSet("addedLocations", new HashSet<>());
             for (String loc : locations) {
                 String addedData = intent.getStringExtra(loc);
-                Log.i("HERE BROADCAST", "added: " + addedData);
+                Log.i("HERE BROADCAST", "added loc: " + addedData);
                 sendNotification(context, addedData);
             }
+
         }
     }
 
@@ -42,10 +44,10 @@ public class BroadcastReceiverWeather extends BroadcastReceiver {
                     .setContentTitle("Weather Update")
                     .setStyle(new NotificationCompat.BigTextStyle()
                             .bigText(data1 + "\n" + data2 + "\n" + data3))
-                    .setAutoCancel(true);
-
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            Log.i("HERE BROADCAST", "triple notification built");
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            notificationManager.notify(123, builder.build());
+            notificationManager.notify(1, builder.build());
         } else {
             Toast.makeText(context, "Notifications are disabled.", Toast.LENGTH_SHORT).show();
         }
@@ -58,10 +60,10 @@ public class BroadcastReceiverWeather extends BroadcastReceiver {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "weather_channel")
                     .setContentTitle("Weather Update")
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(data))
-                    .setAutoCancel(true);
-
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            Log.i("HERE BROADCAST", "single notification built");
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            notificationManager.notify(123, builder.build());
+            notificationManager.notify(1, builder.build());
         } else {
             Toast.makeText(context, "Notifications are disabled.", Toast.LENGTH_SHORT).show();
         }

@@ -1,12 +1,16 @@
 package com.example.kim_j_project5;
 
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -20,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -224,12 +229,12 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
             editor.putString("lastLocation3", lastLocation2);
             editor.putString("lastLocation2", lastLocation1);
             editor.putString("lastLocation1", location);
-            Log.i("HERE LOCATION INPUT", "loc 1: " + lastLocation1);
-            Log.i("HERE LOCATION INPUT", "loc 2: " + lastLocation2);
-            Log.i("HERE LOCATION INPUT", "loc 3: " + lastLocation3);
             editor.apply();
             updateLastSearchedButtons();
         }
+        Log.i("HERE LOCATION INPUT", "loc 1: " + lastLocation1);
+        Log.i("HERE LOCATION INPUT", "loc 2: " + lastLocation2);
+        Log.i("HERE LOCATION INPUT", "loc 3: " + lastLocation3);
     }
 
     // display last searched locations
@@ -289,5 +294,16 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
         });
         dialog.show();
     }
+
+    /*// create a channel
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "weather_channel";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("weather_channel", name, importance);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+    }*/
 
 }

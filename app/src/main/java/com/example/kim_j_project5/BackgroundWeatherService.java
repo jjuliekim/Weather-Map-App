@@ -3,6 +3,7 @@ package com.example.kim_j_project5;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
@@ -31,7 +32,7 @@ import java.util.Locale;
 import java.util.Set;
 
 public class BackgroundWeatherService extends Service {
-    private final int fetchInterval = 60 * 1000; // 15 minutes (testing with 1 min)
+    private final int fetchInterval = 15* 60 * 1000; // 15 minutes
     private String apiKey = "7952fc9a03ecf59677b07feb65d3b189";
     private String baseURL = "https://api.openweathermap.org/data/2.5/weather?units=imperial&";
     private SharedPreferences sharedPreferences;
@@ -67,9 +68,9 @@ public class BackgroundWeatherService extends Service {
     }
 
     private void fetchWeatherInfo() {
-        String loc1 = sharedPreferences.getString("location1", "--");
-        String loc2 = sharedPreferences.getString("location2", "--");
-        String loc3 = sharedPreferences.getString("location3", "--");
+        String loc1 = sharedPreferences.getString("lastLocation1", "--");
+        String loc2 = sharedPreferences.getString("lastLocation2", "--");
+        String loc3 = sharedPreferences.getString("lastLocation3", "--");
         if (loc1.equals("--")) {
             sendWeatherIntent.putExtra("location1", "");
         } else {
@@ -141,7 +142,7 @@ public class BackgroundWeatherService extends Service {
                 JSONObject main = jsonObject.getJSONObject("main");
                 double temp = main.getDouble("temp");
                 String description = jsonObject.getJSONArray("weather").getJSONObject(0).getString("description");
-
+                Log.i("HERE BG SERVICE", location + ": " + description);
                 sendWeatherIntent.putExtra(locationKey, location + ": " + temp + "°F " + description);
             } catch (Exception e) {
                 Log.e("HERE BG WEATHER", "Error parsing JSON", e);
