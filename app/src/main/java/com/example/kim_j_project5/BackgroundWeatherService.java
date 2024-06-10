@@ -48,10 +48,11 @@ public class BackgroundWeatherService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.i("HERE BG SERVICE", "created");
         sharedPreferences = getSharedPreferences("Locations", MODE_PRIVATE);
         sendWeatherIntent = new Intent();
         sendWeatherIntent.setAction("com.example.kim_j_project5.background_update");
-        handler.postDelayed(runnable, fetchInterval);
+        handler.post(runnable);
     }
 
     @Nullable
@@ -85,7 +86,13 @@ public class BackgroundWeatherService extends Service {
             getData(loc3, "location3");
         }
 
+        Set<String> addedLocations = sharedPreferences.getStringSet("addedLocations", new HashSet<>());
+        for (String location : addedLocations) {
+            getData(location, location);
+        }
+
         sendBroadcast(sendWeatherIntent);
+        Log.i("HERE BG SERVICE", "broadcast sent");
     }
 
     // get data from current weather api call
@@ -137,7 +144,7 @@ public class BackgroundWeatherService extends Service {
 
                 sendWeatherIntent.putExtra(locationKey, location + ": " + temp + "°F " + description);
             } catch (Exception e) {
-                Log.e("HERE BG WEATHER JSON Parsing", "Error parsing JSON", e);
+                Log.e("HERE BG WEATHER", "Error parsing JSON", e);
             }
         }
 
@@ -159,7 +166,7 @@ public class BackgroundWeatherService extends Service {
                     urlConnection.disconnect();
                 }
             } catch (Exception e) {
-                Log.e("HERE BG WEATHER DownloadDataTask", "Error", e);
+                Log.e("HERE BG WEATHER", "do in bg e: " + e.getMessage());
                 return null;
             }
         }
