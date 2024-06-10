@@ -3,7 +3,6 @@ package com.example.kim_j_project5;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
@@ -32,16 +31,17 @@ import java.util.Locale;
 import java.util.Set;
 
 public class BackgroundWeatherService extends Service {
-    private final int fetchInterval = 15* 60 * 1000; // 15 minutes
-    private String apiKey = "7952fc9a03ecf59677b07feb65d3b189";
-    private String baseURL = "https://api.openweathermap.org/data/2.5/weather?units=imperial&";
+    private final String apiKey = "7952fc9a03ecf59677b07feb65d3b189";
+    private final String baseURL = "https://api.openweathermap.org/data/2.5/weather?units=imperial&";
     private SharedPreferences sharedPreferences;
     private Intent sendWeatherIntent;
-    private Handler handler = new Handler();
-    private Runnable runnable = new Runnable() {
+    private final Handler handler = new Handler();
+    private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
             fetchWeatherInfo();
+            // 15 minutes
+            int fetchInterval = 15 * 60 * 1000;
             handler.postDelayed(this, fetchInterval);
         }
     };
@@ -128,8 +128,8 @@ public class BackgroundWeatherService extends Service {
     }
 
     private class DownloadDataTask extends AsyncTask<String, Void, String> {
-        private String location;
-        private String locationKey;
+        private final String location;
+        private final String locationKey;
         public DownloadDataTask(String location, String locationKey) {
             this.location = location;
             this.locationKey = locationKey;
