@@ -18,7 +18,7 @@ public class BroadcastReceiverWeather extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.i("HERE BROADCAST", "here");
         if (intent != null && intent.getAction() != null &&
-                intent.getAction().equals("com.example.kim_j_project5.background_update")) {
+                intent.getAction().equals("com.example.kim_j_project5_update")) {
             String data1 = intent.getStringExtra("location1");
             String data2 = intent.getStringExtra("location2");
             String data3 = intent.getStringExtra("location3");

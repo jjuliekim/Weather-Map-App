@@ -39,7 +39,7 @@
         <receiver android:name=".BroadcastReceiverWeather"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.example.kim_j_project5.background_update" />
+                <action android:name="com.example.kim_j_project5_update" />
             </intent-filter>
         </receiver>
 

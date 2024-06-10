@@ -52,7 +52,7 @@ public class BackgroundWeatherService extends Service {
         Log.i("HERE BG SERVICE", "created");
         sharedPreferences = getSharedPreferences("Locations", MODE_PRIVATE);
         sendWeatherIntent = new Intent();
-        sendWeatherIntent.setAction("com.example.kim_j_project5.background_update");
+        sendWeatherIntent.setAction("com.example.kim_j_project5_update");
         handler.post(runnable);
     }
 
