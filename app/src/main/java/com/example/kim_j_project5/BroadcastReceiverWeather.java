@@ -22,6 +22,8 @@ public class BroadcastReceiverWeather extends BroadcastReceiver {
             String data3 = intent.getStringExtra("location3");
 
             sendNotification(context, data1, data2, data3);
+
+
         }
     }
 
