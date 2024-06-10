@@ -275,11 +275,12 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
             if (!location.isEmpty()) {
                 // add new location to shared prefs
                 SharedPreferences.Editor editor = getSharedPreferences("Locations", MODE_PRIVATE).edit();
-                Set<String> addedLocations = getSharedPreferences("Locations", MODE_PRIVATE).getStringSet("addedLocations", new HashSet<>());
-                addedLocations.add(location);
-                editor.putStringSet("locationsSet", addedLocations);
-                Log.i("HERE LOCATION INPUT", "set: " + addedLocations);
+                Set<String> addedLocations = sharedPreferences.getStringSet("addedLocations", new HashSet<>());
+                Set<String> updatedLocations = new HashSet<>(addedLocations);
+                updatedLocations.add(location);
+                editor.putStringSet("addedLocations", updatedLocations);
                 editor.apply();
+                Log.i("HERE LOCATION INPUT", "set: " + updatedLocations);
                 dialog.dismiss();
                 Toast.makeText(LocationInputActivity.this, "Location Added", Toast.LENGTH_SHORT).show();
             } else {
