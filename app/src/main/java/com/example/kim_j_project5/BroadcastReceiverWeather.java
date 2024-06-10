@@ -21,23 +21,7 @@ public class BroadcastReceiverWeather extends BroadcastReceiver {
             String data2 = intent.getStringExtra("location2");
             String data3 = intent.getStringExtra("location3");
 
-            if (data1 == null) {
-                data1 = "";
-            }
-            if (data2 == null) {
-                data2 = "";
-            }
-            if (data3 == null) {
-                data3 = "";
-            }
-
             sendNotification(context, data1, data2, data3);
-
-            SharedPreferences sharedPreferences = context.getSharedPreferences("Locations", Context.MODE_PRIVATE);
-            Set<String> locationsSet = sharedPreferences.getStringSet("locationsSet", new HashSet<>());
-            for (String loc : locationsSet) {
-                sendNotification(context, intent.getStringExtra("location" + loc.hashCode()), "", "");
-            }
         }
     }
 
