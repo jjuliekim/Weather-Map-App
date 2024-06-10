@@ -53,7 +53,7 @@ public class BackgroundWeatherService extends Service {
             synchronized (this) {
                 while (true) {
                     try {
-                        wait(10000);
+                        wait(900000); // 15 minutes
                         Log.i("HERE", "running");
                         fetchWeatherInfo();
                     } catch (Exception e) {
