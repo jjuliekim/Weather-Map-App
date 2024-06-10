@@ -29,31 +29,39 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class BackgroundWeatherService extends Service {
     private final String apiKey = "7952fc9a03ecf59677b07feb65d3b189";
     private final String baseURL = "https://api.openweathermap.org/data/2.5/weather?units=imperial&";
     private SharedPreferences sharedPreferences;
     private Intent sendWeatherIntent;
-    private final Handler handler = new Handler();
-    private final Runnable runnable = new Runnable() {
+
+    final class MyThread implements Runnable {
+        int serviceId;
+        public MyThread(int std) {
+            serviceId = std;
+        }
+
         @Override
         public void run() {
-            fetchWeatherInfo();
-            // 15 minutes
-            int fetchInterval = 15 * 60 * 1000;
-            handler.postDelayed(this, fetchInterval);
+            sharedPreferences = getSharedPreferences("Locations", MODE_PRIVATE);
+            sendWeatherIntent = new Intent();
+            sendWeatherIntent.setAction("com.example.kim_j_project5_update");
+            synchronized (this) {
+                while (true) {
+                    try {
+                        wait(10000);
+                        Log.i("HERE", "running");
+                        fetchWeatherInfo();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
-    };
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.i("HERE BG SERVICE", "created");
-        sharedPreferences = getSharedPreferences("Locations", MODE_PRIVATE);
-        sendWeatherIntent = new Intent();
-        sendWeatherIntent.setAction("com.example.kim_j_project5_update");
-        handler.post(runnable);
     }
 
     @Nullable
@@ -64,6 +72,17 @@ public class BackgroundWeatherService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i("HERE BG SERVICE", "service started");
+        int NUM_CORES = Runtime.getRuntime().availableProcessors();
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(
+                NUM_CORES*2,
+                NUM_CORES*2,
+                60L,
+                TimeUnit.SECONDS,
+                new LinkedBlockingDeque<Runnable>()
+        );
+        executor.execute(new MyThread(startId));
+
         return START_STICKY;
     }
 
