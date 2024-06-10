@@ -25,15 +25,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class BackgroundWeatherService extends Service {
-    private final int fetchInterval = 15 * 60 * 1000; // 15 minutes
+    private final int fetchInterval = 60 * 1000; // 15 minutes (testing with 1 min)
     private String apiKey = "7952fc9a03ecf59677b07feb65d3b189";
     private String baseURL = "https://api.openweathermap.org/data/2.5/weather?units=imperial&";
     private SharedPreferences sharedPreferences;
-    Intent weatherIntent = new Intent("com.example.kim_j_project5.background_update");
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
         @Override
@@ -66,21 +67,28 @@ public class BackgroundWeatherService extends Service {
         String loc1 = sharedPreferences.getString("location1", null);
         String loc2 = sharedPreferences.getString("location2", null);
         String loc3 = sharedPreferences.getString("location3", null);
-
-        getData(loc1, "location1");
-        getData(loc2, "location2");
-        getData(loc3, "location3");
+        Intent weatherIntent = new Intent("com.example.kim_j_project5.background_update");
+        getData(loc1, "location1", weatherIntent);
+        getData(loc2, "location2", weatherIntent);
+        getData(loc3, "location3", weatherIntent);
         sendBroadcast(weatherIntent);
+
+        Set<String> locationsSet = sharedPreferences.getStringSet("locationsSet", new HashSet<>());
+        for (String loc : locationsSet) {
+            Intent weatherIntent2 = new Intent("com.example.kim_j_project5.background_update");
+            getData(loc, "location" + loc.hashCode(), weatherIntent2);
+            sendBroadcast(weatherIntent2);
+        }
     }
 
     // get data from current weather api call
-    private void getData(String location, String locationKey) {
+    private void getData(String location, String locationKey, Intent weatherIntent) {
         LatLng locationLatLng = getLatLngFromLocation(location);
         String restURL = baseURL + "lat=" + locationLatLng.latitude + "&lon=" + locationLatLng.longitude + "&appid=" + apiKey;
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if(networkInfo != null && networkInfo.isConnected()){
-            new DownloadDataTask(location, locationKey).execute(restURL);
+            new DownloadDataTask(location, locationKey, weatherIntent).execute(restURL);
         } else {
             Toast.makeText(this, "Network Connection Unavailable", Toast.LENGTH_SHORT).show();
         }
@@ -107,9 +115,11 @@ public class BackgroundWeatherService extends Service {
     private class DownloadDataTask extends AsyncTask<String, Void, String> {
         private String location;
         private String locationKey;
-        public DownloadDataTask(String location, String locationKey) {
+        private Intent weatherIntent;
+        public DownloadDataTask(String location, String locationKey, Intent weatherIntent) {
             this.location = location;
             this.locationKey = locationKey;
+            this.weatherIntent = weatherIntent;
         }
 
         @Override

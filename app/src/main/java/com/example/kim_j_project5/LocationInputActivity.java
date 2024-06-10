@@ -34,8 +34,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 
 public class LocationInputActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -274,6 +276,12 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
         buttonDialogAddLocation.setOnClickListener(v -> {
             String location = editTextDialogLocation.getText().toString();
             if (!location.isEmpty()) {
+                // add new location to shared prefs
+                SharedPreferences.Editor editor = getSharedPreferences("Locations", MODE_PRIVATE).edit();
+                Set<String> locationsSet = getSharedPreferences("Locations", MODE_PRIVATE).getStringSet("locationsSet", new HashSet<>());
+                locationsSet.add(location);
+                editor.putStringSet("locationsSet", locationsSet);
+                editor.apply();
                 dialog.dismiss();
                 Toast.makeText(LocationInputActivity.this, "Location Added", Toast.LENGTH_SHORT).show();
             } else {
