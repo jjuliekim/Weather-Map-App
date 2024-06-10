@@ -133,8 +133,6 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
                     mMap.setMyLocationEnabled(true);
                     getDeviceLocation();
                 }
-            } else {
-                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -184,7 +182,6 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
             }
         } catch (IOException e) {
             Log.i("HERE LOCATION INPUT", "e get lat lng from loc: " + e);
-            Toast.makeText(this, "Unable to get location", Toast.LENGTH_SHORT).show();
         }
     }
 
