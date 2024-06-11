@@ -1,6 +1,8 @@
 package com.example.kim_j_project5;
 
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -9,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -113,6 +116,10 @@ public class LocationInputActivity extends FragmentActivity implements OnMapRead
 
         // add location button actions
         addLocationButton.setOnClickListener(v -> showAddLocationDialog());
+
+        MyReceiver receiver = new MyReceiver();
+        IntentFilter filter = new IntentFilter("com.example.kim_j_project5_update");
+        registerReceiver(receiver, filter);
 
         startService(new Intent(this, BackgroundWeatherService.class));
     }

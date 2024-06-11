@@ -1,9 +1,12 @@
 package com.example.kim_j_project5;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,7 +16,8 @@ import androidx.core.app.NotificationManagerCompat;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BroadcastReceiverWeather extends BroadcastReceiver {
+public class MyReceiver extends BroadcastReceiver {
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.i("HERE BROADCAST", "here");
@@ -38,6 +42,7 @@ public class BroadcastReceiverWeather extends BroadcastReceiver {
 
     // send notifs with Notification Manager
     private void send3Notification(Context context, String data1, String data2, String data3) {
+        createNotifChannel(context);
         // Check if notifications are enabled for the app
         if (NotificationManagerCompat.from(context).areNotificationsEnabled()) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "weather_channel")
@@ -55,6 +60,7 @@ public class BroadcastReceiverWeather extends BroadcastReceiver {
 
     // send single notification
     private void sendNotification(Context context, String data) {
+        createNotifChannel(context);
         // Check if notifications are enabled for the app
         if (NotificationManagerCompat.from(context).areNotificationsEnabled()) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "weather_channel")
@@ -66,6 +72,18 @@ public class BroadcastReceiverWeather extends BroadcastReceiver {
             notificationManager.notify(1, builder.build());
         } else {
             Toast.makeText(context, "Notifications are disabled.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void createNotifChannel(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Weather Channel";
+            String description = "Channel for weather updates";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("weather_channel", name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
         }
     }
 

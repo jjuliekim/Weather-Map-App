@@ -40,7 +40,7 @@
             android:exported="false" />
 
         <receiver
-            android:name=".BroadcastReceiverWeather"
+            android:name=".MyReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
